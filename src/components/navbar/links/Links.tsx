@@ -44,8 +44,6 @@ function PageLinks({ links }: { links: navbarProps[] }) {
                             <>
                             {isAdmin && <NavLink item={{title: "Admin", slug: "/admin"}} />}
                             <button className={styles.logout}>Logout</button>
-                            {/* <Image href={'/menu.png'} alt="menuPng" /> */}
-                            {/* <Image src={`/menu.png`} alt="menu-png" width={200} height={200} /> */}
                             </>
                         ) : (
                             <NavLink item={{title: "Login", slug: "/login"}}/>
