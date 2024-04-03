@@ -38,3 +38,19 @@
 .img {
     object-fit: contain;
 }
+
+/* responsive media screen */
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    .textContainer{
+        display: flex;
+        text-align: start;
+    }
+    .boxes {
+        flex-direction: column;
+        gap: 50%;
+        text-align: center;
+    }
+}

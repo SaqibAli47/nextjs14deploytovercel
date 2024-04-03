@@ -38,3 +38,25 @@
     flex: 1;
     position: relative;
 }
+
+@media screen and (max-width: 768px) {
+    .title{
+        font-size: 64px;
+    }
+    .desc {
+        margin-bottom: 10px;
+    }
+    .brands{
+        width: 100%;
+    }
+    .buttons {
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+    .brands {
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+    }
+}

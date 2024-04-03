@@ -2,6 +2,7 @@ import Image from "next/image";
 import styles from "./about.module.css";
 
 function AboutPage() {
+  // console.log("its a client side component")
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>

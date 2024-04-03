@@ -17,3 +17,11 @@
         width: 100%;
     }
 }
+
+/* responsive media screen */
+
+@media screen and (max-width: 600px) {
+    .container {
+        justify-content: center;
+    }
+}
