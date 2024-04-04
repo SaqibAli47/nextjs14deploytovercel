@@ -1,4 +1,5 @@
-const posts = [
+
+/** const posts = [
     {
         "userId": 1,
         "id": 1,
@@ -124,17 +125,70 @@ const users = [
       }
     },
 ]
+**/
+import { Post, User } from "./models";
+import ConnectToDB from "./utils";
 export const getPosts = async () => {
-    return posts;
+    try{
+      await ConnectToDB();
+      const posts = await Post.find();
+      if(!posts){
+        throw new Error("Failed To Fetch Data");
+      } return posts
+    } catch(err){
+      console.log("error", err);
+      throw new Error("failed to fetch posts")
+    }
 }
-export const getSinglePost = async (id:number) => {
-    return posts.find(p=> p.id === +id);
+export const getSinglePostWithId = async (id:number) => {
+    try {
+      await ConnectToDB()
+      const singlePost = await Post.findById(id).exec();
+      if(!singlePost) {
+      throw new Error("failed to fetch single Post")
+      } return singlePost
+    } catch(err){
+      console.log("Error", err);
+      throw new Error("Failed to fetch Single Post");
+    }
+}
+export const getSinglePostWithSlug = async (slug: string) => {
+  console.log("slugg: ", slug)
+  try {
+    await ConnectToDB()
+    const singlePost = await Post.findOne({slug: slug});
+    if(!singlePost) {
+    throw new Error("failed to fetch single Post With Slug")
+    } return singlePost
+  } catch(err){
+    console.log("Error", err);
+    throw new Error("Failed to fetch Single Post Slug");
+  }
 }
 // get User Routes
 export const getUsers = async () => {
-    return users;
+    try{
+      await ConnectToDB();
+      const users = await User.find();
+      if(!users) {
+        throw new Error("failed to fetch data:");
+      }
+      return users;
+    } catch(err){
+      console.log("error:", err);
+      throw new Error("failed to fetch users");
+    }
 }
 // get Single User
-export const getSingleUser = async (id: number) => {
-  return users.find(u => u.id === +id);
+export const getSingleUserWithUserId = async (id: number) => {
+  try {
+    await ConnectToDB();
+    const singleUser = User.findById(id.toString()).exec();
+    if(!singleUser) {
+      throw new Error("User not Found");
+    } return singleUser
+  } catch(err) {
+    console.log("error: ", err);
+    throw new Error("Failed to fetch Single User Data");
+  }
 }
