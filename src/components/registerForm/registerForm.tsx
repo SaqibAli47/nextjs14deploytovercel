@@ -9,8 +9,8 @@ function RegisterForm() {
   const [state, formAction] = useFormState(addUser, undefined);
   const router = useRouter();
   useEffect(() => {
-    state?.sucess && router.push("/login");
-  }, [state?.sucess, router])
+    state?.success && router.push("/login");
+  }, [state?.success, router])
   return (
     <form action={formAction} className={styles.form}>
     <input type="text" placeholder="Enter User name" name="username" />

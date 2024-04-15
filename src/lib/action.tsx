@@ -63,6 +63,7 @@ export const addUser = async (prevState:any,formData:any) => {
     await newUser.save();
     console.log("saved to db");
     revalidatePath("/admin");
+    return {success: true}
   } catch (err) {
     console.log(err);
     return { error: "Something went wrong!" };
