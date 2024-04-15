@@ -44,14 +44,17 @@ export const deletePost = async (formData: any) => {
     }
 }
 
-export const login = async (formData: any) => {
+export const login = async (previousState:any, formData: any) => {
     const {username, password} = Object.fromEntries(formData);
     try {
         // console.log("username: ", username, "password::", password)
        await signIn("credentials", {username, password})
-    } catch (error) {
-        console.log("error-01: ", error)
-        return{error: "Something went wrong!"};
+    } catch (err:any) {
+        console.log("error-01: ", err)
+        if(err.message.includes('CredentialsSignin')){
+            return {error: "Invalid user name or password"}
+        }
+        throw err;
     }
 }
 
@@ -64,19 +67,17 @@ export const handleLogout = async () => {
     await signOut()
 }
 
-export const addUser = async (formData:any) => {
+export const addUser = async (previousState: any, formData:any) => {
     const {name, username, email, password, repeatpassword,img} = Object.fromEntries(formData)
     // console.log(name, username, email, password, repeatpassword, img);
     if(password !== repeatpassword) {
-        return ("Passwrod does not match")
+        return {error: "Passwrods do not match"}
     } else{
         try {
             await ConnectToDB();
             const user = await User.findOne({username});
             if(user){
-                return (
-                    "User already Exist"
-                )
+                return {error: "User already Exist"}
             } else{
                 const salt = await bcrypt.genSalt(10);
                 const hashPassword = await bcrypt.hash(password, salt);
@@ -89,11 +90,13 @@ export const addUser = async (formData:any) => {
                 })
                 await newUser.save();
                 console.log("new-user-saved-successfully!");
+                return {sucess: true}
                 // set to be empty
                 formData = {}
             } 
         } catch (error) {
             console.log("error: ", error)
+            return {error: "something went wrong!"}
         }
     }
 }
