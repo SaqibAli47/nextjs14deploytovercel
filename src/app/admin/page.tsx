@@ -8,7 +8,6 @@ import { auth } from '@/lib/auth'
 
 async function AdminPage () {
     const session = await auth();
-    const id = session?.user?.id;
     return (
         <div className={styles.container}>
             <div className={styles.row}>
@@ -18,9 +17,7 @@ async function AdminPage () {
                     </Suspense>
                 </div>
                 <div className={styles.col}>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <AdminPostForm userId = {id} />
-                    </Suspense>
+                    <AdminPostForm userId = {session?.user} />    
                 </div>
             </div>
             <div className={styles.row}>
