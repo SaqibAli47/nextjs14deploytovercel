@@ -136,7 +136,7 @@ export const login = async (prevState:any, formData:any) => {
 
   try {
     await signIn("credentials", { username, password });
-  } catch (err) {
+  } catch (err:any) {
     console.log(err);
 
     if (err.message.includes("CredentialsSignin")) {
