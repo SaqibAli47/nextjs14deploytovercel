@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./postCard.module.css";
+// import { Date } from "mongoose";
 interface PostProps {
   title: string,
   desc: string,
   slug: string,
-  img: string
+  img: string,
+  createdAt: Date
 }
 function PostCard({post}: {post: PostProps}) {
+  // console.log("post88", post.createdAt)
+  // const formattedDate = new Date(post.createdAt).toLocaleDateString();
   return (
     <div className={styles.container}>
       <div className={styles.top}>
@@ -19,7 +23,11 @@ function PostCard({post}: {post: PostProps}) {
             className={styles.img}
           />
         </div>
-        <span className={styles.date}>01.01.2024</span>
+        <span className={styles.date}>{post && new Date(post.createdAt).toLocaleString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        })}</span>
       </div>
       <div className={styles.bottom}>
         <h1 className={styles.title}>{post.title}</h1>

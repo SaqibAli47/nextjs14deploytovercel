@@ -9,12 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "install": "^0.13.0",
     "mongoose": "^8.3.0",
     "next": "14.1.4",
+    "next-auth": "^5.0.0-beta.3",
+    "npm": "^10.5.1",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

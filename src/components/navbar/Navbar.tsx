@@ -2,6 +2,7 @@ import Link from "next/link";
 import PageLinks from "@/components/navbar/links/Links";
 import navbarProps from "@/components/interfaces/navbar"
 import styles from './navbar.module.css'
+import { auth } from "@/lib/auth";
 const linksArr: navbarProps[] = [
     {
         "title": "Home",
@@ -21,14 +22,16 @@ const linksArr: navbarProps[] = [
     },
 
 ];
-function NavBar () {
+const NavBar = async () =>  {
+    const session = await auth();
+    // console.log("session:", session)
     return (
         <div className={styles.container}>
             <Link href="/" className={styles.logo}>
                 Logo
             </Link>
             <div>
-                <PageLinks links={linksArr}/>
+                <PageLinks links={linksArr} session = {session}/>
             </div>
         </div>
     )

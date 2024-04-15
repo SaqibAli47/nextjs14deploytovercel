@@ -17,8 +17,7 @@ import { getSingleUserWithUserId } from '@/lib/data'
 const PostUser = async ({userId}: Readonly<{userId: number}>) =>  {
     // console.log("userId::", userId)
     const user = await getSingleUserWithUserId(userId);
-    console.log("userId:", user)
-    const staticAvatar = `https://images.pexels.com/photos/8092507/pexels-photo-8092507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2`;
+    const staticAvatar = '/noavatar.png';
     return (
         <div className={styles.detail}>
             <Image
@@ -31,10 +30,6 @@ const PostUser = async ({userId}: Readonly<{userId: number}>) =>  {
             <div className={styles.detailText}>
                 <div className={styles.detailTitle}>{user?.username}</div>
                 <div className={styles.detailValue}>{user?.name}</div>
-            </div>
-            <div className={styles.detailText}>
-                <div className={styles.detailTitle}>Published</div>
-                <div className={styles.detailValue}>01.01.2024</div>
             </div>
         </div>
     )

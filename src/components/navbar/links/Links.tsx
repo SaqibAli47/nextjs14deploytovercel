@@ -5,10 +5,11 @@ import styles from "./links.module.css";
 import NavLink from "./navLink/navLink";
 import { useState } from "react";
 import Image from "next/image";
-function PageLinks({ links }: { links: navbarProps[] }) {
+import { handleLogout } from "@/lib/action";
+function PageLinks({ links, session }: { links: navbarProps[], session: any }) {
     //Temporary
     const [mobileMenu, setMobileMenu] = useState(false)
-    const session = true;
+    
     const isAdmin = true;
     return (
         <div className={styles.container}>
@@ -18,10 +19,12 @@ function PageLinks({ links }: { links: navbarProps[] }) {
                 {links.map((link, index) => (
                     <NavLink item={link} key={index} />
                 ))} {
-                    session ? (
+                    session?.user ? (
                         <>
-                        {isAdmin && <NavLink item={{title: "Admin", slug: "/admin"}} />}
-                        <button className={styles.logout}>Logout</button>
+                        {session.user?.isAdmin && <NavLink item={{title: "Admin", slug: "/admin"}} />}
+                        <form action={handleLogout}>
+                            <button className={styles.logout}>Logout</button>
+                        </form>
                         </>
                     ) : (
                         <NavLink item={{title: "Login", slug: "/login"}}/>

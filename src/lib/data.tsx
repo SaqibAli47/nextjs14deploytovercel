@@ -153,10 +153,10 @@ export const getSinglePostWithId = async (id:number) => {
     }
 }
 export const getSinglePostWithSlug = async (slug: string) => {
-  console.log("slugg: ", slug)
+  // console.log("slugg: ", slug)
   try {
     await ConnectToDB()
-    const singlePost = await Post.findOne({slug: slug});
+    const singlePost = await Post.findOne({slug});
     if(!singlePost) {
     throw new Error("failed to fetch single Post With Slug")
     } return singlePost
@@ -171,19 +171,22 @@ export const getUsers = async () => {
       await ConnectToDB();
       const users = await User.find();
       if(!users) {
-        throw new Error("failed to fetch data:");
+        throw new Error("failed to fetch Users!");
       }
       return users;
     } catch(err){
       console.log("error:", err);
-      throw new Error("failed to fetch users");
+      throw new Error("failed to fetch users!");
     }
 }
 // get Single User
 export const getSingleUserWithUserId = async (id: number) => {
+  // console.log("id77:", id);
   try {
     await ConnectToDB();
-    const singleUser = User.findById(id.toString()).exec();
+    // const singleUser =  await User.findById(id);
+    const singleUser = await User.findOne({id : id})
+    // console.log("singleUserData::", singleUser)
     if(!singleUser) {
       throw new Error("User not Found");
     } return singleUser
