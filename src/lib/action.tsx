@@ -47,9 +47,10 @@ export const deletePost = async (formData: any) => {
 export const login = async (formData: any) => {
     const {username, password} = Object.fromEntries(formData);
     try {
+        // console.log("username: ", username, "password::", password)
        await signIn("credentials", {username, password})
     } catch (error) {
-        console.log("error: ", error)
+        console.log("error-01: ", error)
         return{error: "Something went wrong!"};
     }
 }
