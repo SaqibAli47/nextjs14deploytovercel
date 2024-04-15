@@ -1,4 +1,4 @@
-import { handleGithubLogin, login } from '@/lib/action';
+import { handleGithubLogin } from '@/lib/action';
 import styles from './login.module.css'
 import LoginForm from '@/components/loginForm/loginForm';
 const LoginPage = async () => {

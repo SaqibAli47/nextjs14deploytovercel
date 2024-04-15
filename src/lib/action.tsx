@@ -1,102 +1,147 @@
-"use server"
-import { revalidatePath } from "next/cache"
-import { Post, User } from "./models"
-import ConnectToDB from "./utils"
-import { signIn, signOut } from "./auth"
-import bcrypt from "bcryptjs"
+"use server";
 
-interface FormData {
-    title: string, 
-    desc: string,
-    slug: string,
-    userId: string
-}
-export const addPost = async (formData: any) => {
-    "use server"
-    const {title, desc, slug, userId} = Object.fromEntries(formData)
-    try {
-        ConnectToDB();
-        const newPost = new Post({
-            title, desc, slug, userId
-        })
-        if(newPost){
-            await newPost.save();
-            console.log("Post saved Successfully!");
-            revalidatePath("/blog")
-        } else{
-            throw new Error("Something Went Wrong!");
-        }
-    } catch (error) {
-        console.log("error: ", error)
-        throw new Error("Something Went Wrong! ")
-    }
-}
-export const deletePost = async (formData: any) => {
-    "use server"
-    const {id} = Object.fromEntries(formData)
-    try {
-        await ConnectToDB();
-        await Post.findByIdAndDelete(id);
-        console.log("post deleted Successfully!");
-        revalidatePath("/blog");
-    } catch (error) {
-        console.log("erro: ", error)
-    }
-}
+import { revalidatePath } from "next/cache";
+import { Post, User } from "./models";
+import ConnectToDB from "./utils";
+import { signIn, signOut } from "./auth";
+import bcrypt from "bcryptjs";
 
-export const login = async (previousState:any, formData: any) => {
-    const {username, password} = Object.fromEntries(formData);
-    try {
-        // console.log("username: ", username, "password::", password)
-       await signIn("credentials", {username, password})
-    } catch (err:any) {
-        console.log("error-01: ", err)
-        if(err.message.includes('CredentialsSignin')){
-            return {error: "Invalid user name or password"}
-        }
-        throw err;
-    }
-}
+export const addPost = async (prevState:any,formData:any) => {
+  // const title = formData.get("title");
+  // const desc = formData.get("desc");
+  // const slug = formData.get("slug");
+
+  const { title, desc, slug, userId } = Object.fromEntries(formData);
+
+  try {
+    ConnectToDB();
+    const newPost = new Post({
+      title,
+      desc,
+      slug,
+      userId,
+    });
+
+    await newPost.save();
+    console.log("saved to db");
+    revalidatePath("/blog");
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
+
+export const deletePost = async (formData:any) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    ConnectToDB();
+
+    await Post.findByIdAndDelete(id);
+    console.log("deleted from db");
+    revalidatePath("/blog");
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
+
+export const addUser = async (prevState:any,formData:any) => {
+  const { username, email, password, img } = Object.fromEntries(formData);
+
+  try {
+    ConnectToDB();
+    const newUser = new User({
+      username,
+      email,
+      password,
+      img,
+    });
+
+    await newUser.save();
+    console.log("saved to db");
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
+
+export const deleteUser = async (formData:any) => {
+  const { id } = Object.fromEntries(formData);
+  try {
+    ConnectToDB();
+
+    await Post.deleteMany({ userId: id });
+    await User.findByIdAndDelete(id);
+    console.log("deleted from db");
+    revalidatePath("/admin");
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
 
 export const handleGithubLogin = async () => {
-    "use server"
-    await signIn("github")
-}
-export const handleLogout = async () => {
-    "use server"
-    await signOut()
-}
+  "use server";
+  await signIn("github");
+};
 
-export const addUser = async (previousState: any, formData:any) => {
-    const {name, username, email, password, repeatpassword,img} = Object.fromEntries(formData)
-    // console.log(name, username, email, password, repeatpassword, img);
-    if(password !== repeatpassword) {
-        return {error: "Passwrods do not match"}
-    } else{
-        try {
-            await ConnectToDB();
-            const user = await User.findOne({username});
-            if(user){
-                return {error: "User already Exist"}
-            } else{
-                const salt = await bcrypt.genSalt(10);
-                const hashPassword = await bcrypt.hash(password, salt);
-                const newUser = new User({
-                    username: username,
-                    name: name,
-                    email: email,
-                    password: hashPassword,
-                    img: img
-                })
-                await newUser.save();
-                console.log("new-user-saved-successfully!");
-                return {sucess: true}
-                // set to be empty
-                formData = {}
-            } 
-        } catch (error) {
-            console.log("error: ", error)
-            return {error: "something went wrong!"}
-        }
+export const handleLogout = async () => {
+  "use server";
+  await signOut();
+};
+
+export const register = async (previousState:any, formData:any) => {
+  const { username, email, password, img, passwordRepeat } =
+    Object.fromEntries(formData);
+
+  if (password !== passwordRepeat) {
+    return { error: "Passwords do not match" };
+  }
+
+  try {
+    ConnectToDB();
+
+    const user = await User.findOne({ username });
+
+    if (user) {
+      return { error: "Username already exists" };
     }
-}
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      img,
+    });
+
+    await newUser.save();
+    console.log("saved to db");
+
+    return { success: true };
+  } catch (err) {
+    console.log(err);
+    return { error: "Something went wrong!" };
+  }
+};
+
+export const login = async (prevState:any, formData:any) => {
+  const { username, password } = Object.fromEntries(formData);
+
+  try {
+    await signIn("credentials", { username, password });
+  } catch (err) {
+    console.log(err);
+
+    if (err.message.includes("CredentialsSignin")) {
+      return { error: "Invalid username or password" };
+    }
+    throw err;
+  }
+};
