@@ -6,7 +6,8 @@ import { getSinglePostWithSlug } from "@/lib/data";
 import { Metadata, ResolvingMetadata } from 'next';
 // Fetch an Single POST API method
 const getSinglePost = async (slug:string) => {
-    const url = `http://localhost:3000/api/blog/${slug}`;
+    // const url = `http://localhost:3000/api/blog/${slug}`;
+    const url = `https://nextjs14deploytovercel-learning.vercel.app/api/blog/${slug}`;
     try{
         const res = await fetch(url);
         if(!res.ok){

@@ -9,7 +9,8 @@ import { Metadata } from "next";
 // }
 // Fetch Posts With an API method
 const getPostsData = async () => {
-    const url = `http://localhost:3000/api/blog`;
+    // const url = `http://localhost:3000/api/blog`;
+    const url = `https://nextjs14deploytovercel-learning.vercel.app/api/blog`
     try {
         const response = await fetch(url, {next: {revalidate: 3600}});
         if(!response.ok){
