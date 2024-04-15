@@ -1,4 +1,4 @@
-import { addPost, deletePost } from "@/lib/action";
+// import { addPost, deletePost } from "@/lib/action";
 const serverActionTestPage = () => {
     // we can create the server action into here
     // const inlineSeverComponent = async () => {
@@ -7,7 +7,7 @@ const serverActionTestPage = () => {
     // }
   return (
     <div>
-        <form action={addPost}>
+        <form action={() => console.log("submit")}>
             <input type="text" placeholder="Enter Title Here" name="title" />
             <input type="text" placeholder="Enter Description Here" name="desc" />
             <input type="text" placeholder="Enter Slug Here" name="slug" />
@@ -15,7 +15,7 @@ const serverActionTestPage = () => {
             <button type="submit">Add Post</button>
         </form>
         <div>
-            <form action={deletePost}>
+            <form action={() => console.log("delete-test")}>
                 <input type="text" placeholder="Enter Post id here" name="id"/>
                 <button>Delete Post</button>
             </form>
