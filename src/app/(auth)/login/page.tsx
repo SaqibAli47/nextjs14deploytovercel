@@ -1,15 +1,20 @@
 import { handleGithubLogin, login } from '@/lib/action';
+import styles from './login.module.css'
 const LoginPage = async () => {
   return (
-    <div>
-      {/* <form action={handleGithubLogin}>
+    <div className={styles.container}>
+      <div className={styles.wrapper}>
+      <form action={handleGithubLogin}>
         <button>Login With Github</button>
-      </form> */}
-      <form action={login}>
+      </form>
+      <div className={styles.nextForm}>
+      <form action={login} className={styles.form}>
         <input type='text' placeholder='enter username' name='username' />
         <input type='password' placeholder='enter password' name='password' />
         <button>Login With Credentials</button>
       </form>
+      </div>
+    </div>
     </div>
   )
 }
